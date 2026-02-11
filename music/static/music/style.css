@@ -1,0 +1,144 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+
+header {
+  background-color: black;
+  color: white;
+  padding: 20px;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+}
+
+nav {
+  background-color: darkblue;
+  color: white;
+  padding: 20px;
+}
+
+#menu-title {
+  list-style: none;
+  font-weight: bold;
+}
+
+nav a,
+footer a {
+  color: white;
+}
+
+section {
+  padding: 20px;
+}
+
+li.artist {
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: lightgreen;
+  margin-bottom: 10px;
+}
+
+table,
+th,
+td {
+  border: 2px dashed green;
+}
+
+th,
+td {
+  padding: 3px;
+}
+
+footer {
+  background-color: darkorange;
+  color: white;
+  padding: 20px;
+}
+
+/* 2. Reglas para pantallas grandes, como un computador*/
+@media only screen and (min-width: 768px) {
+  /* Grilla con 3 filas y 3 columnas */
+  #main-container {
+    display: grid;
+    /* Así como "%" nos indica porcentaje del alto del elemento padre,
+      "vh" nos indica porcentaje del alto la ventana completa. Aquí queremos
+      que la grilla use todo el alto de la ventana*/
+    height: 100vh;
+    /* La columna del menú tendrá 200px de ancho y las demás se ajustarán
+      automáticamente a su contenido. */
+    grid-template-columns: 200px auto auto;
+    /* Mientras que "auto" se ajusta al contenido, "fr" se ajusta al espacio libre.
+      "fr" viene de "fracción" del espacio sobrante. Aquí estamos diciendo que la
+      primera fila se ajuste a su contenido ("auto"), y del espacio que falte para
+      llenar la grilla, le daremos 5 partes a la segunda fila y 1 parte a la tercera. */
+    grid-template-rows: auto 5fr 1fr;
+  }
+
+  header {
+    grid-column: 1 / span 3;
+    grid-row: 1;
+  }
+
+  nav {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  #menu-title {
+    /* Movemos el título para que quede más a la izquierda
+      que los otros elementos del menú */
+    position: relative;
+    right: 30px;
+  }
+
+  .menu-item {
+    padding: 10px;
+  }
+
+  #artists-section {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  li.artist {
+    padding: 10px;
+  }
+
+  #albums-section {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  footer {
+    grid-column: 1 / span 3;
+    grid-row: 3;
+  }
+}
+
+/* 3. Reglas para pantallas pequeñas, como un celular. */
+@media only screen and (max-width: 768px) {
+  #main-container {
+    display: grid;
+    /* Una sola columna */
+    grid-template-columns: auto;
+  }
+
+  .menu-item {
+    list-style: none;
+  }
+
+  #menu {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    padding-left: 0;
+    /* gap permite definir el espacio mínimo entre los elementos
+    de un flexbox. Aquí le estamos diciendo que deje 0 espacio entre
+    filas y 15px entre columnas. */
+    gap: 0 15px;
+  }
+}
+

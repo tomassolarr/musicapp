@@ -1,0 +1,50 @@
+{% extends "music/base.html" %}
+
+{% block title %}
+<title>{{ songs.name_song }} | Music App</title>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-music-note me-2"></i>{{ songs.name_song }}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title mb-4">Editar Canción</h5>
+                <form action="{% url 'song_detail' songs.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_name_song" class="form-label">Nombre de la Canción</label>
+                        <input type="text" name="name_song" id="id_name_song" class="form-control" value="{{ songs.name_song }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_duration" class="form-label">Duración (segundos)</label>
+                        <input type="number" name="duration" id="id_duration" class="form-control" value="{{ songs.duration }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_video" class="form-label">URL del Video</label>
+                        <input type="url" name="video" id="id_video" class="form-control" value="{{ songs.video|default:'' }}" placeholder="https://youtube.com/...">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Álbum</label>
+                        <input type="text" class="form-control" value="{{ songs.album.name }} - {{ songs.album.artist.name }}" disabled>
+                    </div>
+                    <div class="d-flex gap-2 mb-3">
+                        <button type="submit" class="btn btn-primary flex-grow-1">
+                            <i class="bi bi-check-lg me-1"></i>Guardar
+                        </button>
+                        <a href="{% url 'album_detail' songs.album.id %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                    </div>
+                    <a href="{% url 'song_delete' songs.id %}" class="btn btn-outline-danger w-100">
+                        <i class="bi bi-trash me-1"></i>Eliminar Canción
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "music/base.html" %}
+
+{% block title %}
+<title>Eliminar {{ artist.name }} | Music App</title>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-5">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <i class="bi bi-exclamation-triangle me-2"></i>Confirmar Eliminación
+            </div>
+            <div class="card-body">
+                <p class="lead">¿Estás seguro de eliminar este artista?</p>
+                <p class="text-danger">
+                    <strong>{{ artist.name }}</strong>
+                </p>
+                <p class="text-muted">
+                    Se eliminarán también todos sus álbumes y canciones asociadas.
+                </p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger flex-grow-1">
+                            <i class="bi bi-trash me-1"></i>Eliminar
+                        </button>
+                        <a href="{% url 'artist_detail' artist.id %}" class="btn btn-outline-secondary flex-grow-1">
+                            <i class="bi bi-x-lg me-1"></i>Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

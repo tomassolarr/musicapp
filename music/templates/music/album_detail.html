@@ -1,0 +1,101 @@
+{% extends "music/base.html" %}
+
+{% block title %}
+<title>{{ album.name }} | Music App</title>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-vinyl me-2"></i>{{ album.name }}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title mb-4">Editar Álbum</h5>
+                <form action="{% url 'album_detail' album.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_name" class="form-label">Nombre del Álbum</label>
+                        <input type="text" name="name" id="id_name" class="form-control" value="{{ album.name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_pub_date" class="form-label">Fecha de Publicación</label>
+                        <input type="date" name="pub_date" id="id_pub_date" class="form-control" value="{{ album.pub_date }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Artista</label>
+                        <input type="text" class="form-control" value="{{ album.artist.name }}" disabled>
+                    </div>
+                    <div class="d-flex gap-2 mb-3">
+                        <button type="submit" class="btn btn-primary flex-grow-1">
+                            <i class="bi bi-check-lg me-1"></i>Guardar
+                        </button>
+                        <a href="{% url 'artist_detail' album.artist.id %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                    </div>
+                    <a href="{% url 'album_delete' album.id %}" class="btn btn-outline-danger w-100">
+                        <i class="bi bi-trash me-1"></i>Eliminar Álbum
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-music-note-list me-2"></i>Canciones del Álbum</span>
+                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addSongModal">
+                    <i class="bi bi-plus-circle me-1"></i>Agregar
+                </button>
+            </div>
+            <div class="card-body">
+                {% if album.songs_set.all %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th><i class="bi bi-music-note me-1"></i>Canción</th>
+                                <th><i class="bi bi-clock me-1"></i>Duración</th>
+                                <th><i class="bi bi-play-btn me-1"></i>Video</th>
+                                <th><i class="bi bi-gear me-1"></i>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for song in album.songs_set.all %}
+                            <tr>
+                                <td>
+                                    <i class="bi bi-music-note-beamed me-2"></i>{{ song.name_song }}
+                                </td>
+                                <td>{{ song.duration_mmss }}</td>
+                                <td>
+                                    {% if song.video %}
+                                    <a href="{{ song.video }}" target="_blank" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-youtube"></i>
+                                    </a>
+                                    {% else %}
+                                    <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'song_detail' song.id %}" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-4 mb-0">
+                    <i class="bi bi-inbox me-2"></i>Este álbum no tiene canciones.
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

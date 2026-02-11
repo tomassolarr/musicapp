@@ -1,0 +1,96 @@
+{% extends "music/base.html" %}
+
+{% block title %}
+<title>Artistas y Álbumes | Music App</title>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">
+        <i class="bi bi-people-fill me-2"></i>Artistas
+    </h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addArtistModal">
+        <i class="bi bi-person-plus me-1"></i>Agregar Artista
+    </button>
+</div>
+
+{% if artists %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+    {% for artist in artists %}
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-person-badge me-2"></i>{{ artist.name }}</span>
+                <span class="badge bg-secondary">{{ artist.album_set.all|length }}</span>
+            </div>
+            <div class="card-body">
+                <p class="card-text mb-3 text-muted">
+                    <i class="bi bi-music-note-list me-2"></i>
+                    {{ artist.genre }}
+                </p>
+                <a href="{% url 'artist_detail' artist.id %}" class="btn btn-outline-primary">
+                    <i class="bi bi-eye me-1"></i>Ver Detalle
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card mb-5">
+    <div class="card-body text-center py-5">
+        <i class="bi bi-inbox fs-1 text-muted mb-3"></i>
+        <p class="text-muted mb-3">No hay artistas registrados.</p>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addArtistModal">
+            <i class="bi bi-person-plus me-1"></i>Agregar tu primer artista
+        </button>
+    </div>
+</div>
+{% endif %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">
+        <i class="bi bi-vinyl-fill me-2"></i>Álbumes
+    </h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAlbumModal">
+        <i class="bi bi-plus-circle me-1"></i>Agregar Álbum
+    </button>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th><i class="bi bi-person me-1"></i>Artista</th>
+                        <th><i class="bi bi-vinyl me-1"></i>Álbum</th>
+                        <th><i class="bi bi-calendar3 me-1"></i>Año</th>
+                        <th><i class="bi bi-gear me-1"></i>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for artist in artists %}
+                        {% for album in artist.album_set.all %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'artist_detail' artist.id %}" class="artist-link">
+                                    {{ artist.name }}
+                                </a>
+                            </td>
+                            <td>{{ album.name }}</td>
+                            <td>{{ album.pub_date.year }}</td>
+                            <td>
+                                <a href="{% url 'album_detail' album.id %}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
